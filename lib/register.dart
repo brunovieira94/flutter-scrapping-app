@@ -3,14 +3,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
+  String name = '';
   String email = '';
   String password = '';
 
@@ -29,6 +30,11 @@ class _LoginPageState extends State<LoginPage> {
                   height: 200,
                   child: Image.asset('assets/images/Logo.png')),
               Container(
+                  child: Text(
+                'Crie sua conta usando seu e-mail como usuário',
+                style: TextStyle(fontSize: 15, color: Colors.white),
+              )),
+              Container(
                 height: 10,
               ),
               Card(
@@ -36,6 +42,16 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
                     children: [
+                      TextField(
+                        onChanged: (text) {
+                          name = text;
+                        },
+                        decoration: InputDecoration(
+                            labelText: 'Name', border: OutlineInputBorder()),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       TextField(
                         onChanged: (text) {
                           email = text;
@@ -68,20 +84,20 @@ class _LoginPageState extends State<LoginPage> {
                             // } else {
                             //   print('login invalido');
                             // }
-                            var url =
-                                Uri.parse('http://10.0.2.2:8080/api/v1/login');
+                            var url = Uri.parse(
+                                'http://10.0.2.2:8080/api/v1/register');
                             print(url);
                             var response = await http.post(url, body: {
+                              "name": name,
                               "username": email,
-                              "password": password
+                              "email": email,
+                              "password": password,
+                              "password2": password
                             });
-                            var json = jsonDecode(response.body);
                             //print(json['token']);
                             if (response.statusCode == 200) {
-                              if (json.containsKey('token')) {
-                                Navigator.of(context)
-                                    .pushReplacementNamed('/home');
-                              }
+                              Navigator.of(context)
+                                  .pushReplacementNamed('/home');
                             }
                             // if (json['token']){
                             //   print("Aq");
@@ -105,15 +121,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              Container(
-                  width: 200,
-                  height: 200,
-                  child: GestureDetector(
-                    child: Text('Ainda não possui uma conta? Cadastre-se', style: TextStyle(fontSize: 15, color: Colors.white)),
-                    onTap: () {
-                      Navigator.of(context).pushReplacementNamed('/register');
-                    },
-                  )),
             ],
           ),
         ),

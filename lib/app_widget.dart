@@ -1,3 +1,4 @@
+import 'package:app_scrapper/register.dart';
 import 'package:app_scrapper/splash.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,7 @@ class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       initialRoute: '/splash',
-      routes: {'/': (context) => LoginPage(), '/home': (context) => HomePage(), '/splash': (context) => MyHomePage()},
+      routes: {'/': (context) => LoginPage(), '/home': (context) => HomePage(), '/splash': (context) => SplashScreen(), '/register': (context) => RegisterPage()},
     );
   }
 }
